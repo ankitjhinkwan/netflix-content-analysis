@@ -1,6 +1,9 @@
 // ===== ANKIT JINKWAN PORTFOLIO - MAIN JS =====
 
 document.addEventListener('DOMContentLoaded', () => {
+    initMatrixRain();
+    initGlitchEffect();
+    initGradientText();
     initParticles();
     initTypedEffect();
     initHeader();
@@ -36,7 +39,16 @@ function initParticles() {
 function initTypedEffect() {
     const el = document.getElementById('typedText');
     if (!el) return;
-    const phrases = ['Full Stack Developer', 'React Developer', 'Node.js Engineer', 'UI/UX Enthusiast', 'Problem Solver'];
+    const phrases = [
+        'Data Scientist 🔬',
+        'I speak fluent Python & Sarcasm',
+        'Turning Coffee → Insights ☕',
+        'My Model > Your Gut Feeling',
+        'Correlation ≠ Causation (but still cool)',
+        'Professional Data Overthinker',
+        'I find patterns in your chaos',
+        '99 problems, ML solves 97 of them'
+    ];
     let phraseIndex = 0, charIndex = 0, isDeleting = false;
 
     function type() {
@@ -174,12 +186,12 @@ function initProjectFilter() {
 
 // ===== PROJECT MODAL =====
 const projectData = {
-    1: { category: 'Web App', title: 'E-Commerce Dashboard', desc: 'A comprehensive dashboard for online retailers featuring real-time analytics, inventory management, order tracking, and customer insights built with React and Node.js.', tags: ['React', 'Node.js', 'MongoDB', 'Express', 'Chart.js'], features: ['Real-time Analytics', 'Inventory Management', 'Order Tracking', 'User Authentication', 'Responsive Design', 'REST API'] },
-    2: { category: 'Mobile App', title: 'Health Tracker App', desc: 'A mobile application for tracking daily fitness activities, water intake, calorie counting and health metrics. Features interactive charts and personalized goal setting.', tags: ['React Native', 'Firebase', 'Redux', 'Chart.js'], features: ['Daily Step Counter', 'Water Intake Log', 'Calorie Tracker', 'Progress Charts', 'Push Notifications', 'Offline Support'] },
-    3: { category: 'UI/UX', title: 'UI Design System', desc: 'A complete, scalable design system with reusable components, design tokens, and comprehensive documentation to ensure consistent UI development across projects.', tags: ['Figma', 'Storybook', 'CSS3', 'Design Tokens'], features: ['50+ Components', 'Dark/Light Mode', 'Accessibility Ready', 'Storybook Docs', 'Design Tokens', 'Figma Library'] },
-    4: { category: 'Web App', title: 'Task Management', desc: 'A collaborative project management tool with Kanban boards, drag-and-drop tasks, team assignments, time tracking and deadline management.', tags: ['Vue.js', 'Express', 'PostgreSQL', 'Socket.io'], features: ['Kanban Boards', 'Drag & Drop', 'Team Collaboration', 'Time Tracking', 'Real-time Updates', 'Email Notifications'] },
-    5: { category: 'Mobile App', title: 'Social Media App', desc: 'A social networking platform designed for professionals in creative industries. Features real-time messaging, portfolio sharing and networking tools.', tags: ['Flutter', 'Firebase', 'Dart', 'Cloud Firestore'], features: ['Real-time Chat', 'Portfolio Showcase', 'Follow System', 'Stories Feature', 'Push Notifications', 'Media Upload'] },
-    6: { category: 'UI/UX', title: 'Portfolio Redesign', desc: 'A complete visual redesign of a professional photographer portfolio website featuring interactive galleries, smooth GSAP animations and a modern minimalist aesthetic.', tags: ['UI/UX', 'GSAP', 'CSS3', 'JavaScript'], features: ['Smooth Animations', 'Interactive Gallery', 'Lightbox Effect', 'Contact Form', 'SEO Optimized', 'Performance Tuned'] }
+    1: { category: 'ML Model', title: 'House Price Prediction', desc: 'A regression model that predicts house prices using advanced feature engineering, XGBoost and hyperparameter tuning on the Ames Housing dataset. Achieved an RMSE in the top 10% on Kaggle.', tags: ['Python', 'XGBoost', 'Scikit-learn', 'Pandas', 'Matplotlib'], features: ['Feature Engineering', 'Hyperparameter Tuning', 'Cross Validation', 'SHAP Explainability', 'Kaggle Submission', 'Jupyter Notebook'] },
+    2: { category: 'EDA', title: 'COVID-19 Data Analysis', desc: 'Comprehensive exploratory data analysis of global COVID-19 trends, vaccination rates and mortality patterns. Visualises spread timelines and compares country-level responses using Pandas and Seaborn.', tags: ['Pandas', 'Seaborn', 'NumPy', 'Matplotlib', 'Jupyter'], features: ['Global Trend Analysis', 'Vaccination Rate Tracking', 'Mortality Pattern Study', 'Country Comparisons', 'Interactive Charts', 'Data Cleaning Pipeline'] },
+    3: { category: 'Visualisation', title: 'Sales Analytics Dashboard', desc: 'An interactive Power BI dashboard visualising 3 years of retail sales data. Includes KPIs, revenue trends, regional breakdowns and product performance metrics for data-driven decision making.', tags: ['Power BI', 'DAX', 'SQL', 'Excel'], features: ['KPI Scorecards', 'Regional Breakdown', 'Year-over-Year Trends', 'Product Performance', 'DAX Measures', 'Drill-Through Pages'] },
+    4: { category: 'ML Model', title: 'Customer Churn Prediction', desc: 'A binary classification model predicting telecom customer churn with 92% accuracy. Uses Random Forest with SHAP values to explain which features drive churn, enabling targeted retention strategies.', tags: ['Random Forest', 'SHAP', 'Python', 'Scikit-learn', 'Seaborn'], features: ['92% Accuracy', 'SHAP Explainability', 'Feature Importance', 'Confusion Matrix', 'ROC-AUC Analysis', 'Business Insights'] },
+    5: { category: 'EDA', title: 'Netflix Content Analysis', desc: 'Deep-dive EDA into Netflix\'s entire content catalogue exploring genre trends, release patterns, content ratings and regional distribution. Uncovers insights on how Netflix has evolved its content strategy.', tags: ['Pandas', 'Plotly', 'Matplotlib', 'Python'], features: ['Genre Trend Analysis', 'Release Pattern Study', 'Content Rating Breakdown', 'Regional Distribution', 'Interactive Plotly Charts', 'Time-Series Analysis'] },
+    6: { category: 'NLP', title: 'Twitter Sentiment Analysis', desc: 'An end-to-end NLP pipeline that classifies tweet sentiments in real-time using a fine-tuned BERT model. Deployed with an interactive Streamlit dashboard for live sentiment monitoring.', tags: ['NLP', 'BERT', 'Streamlit', 'Python', 'HuggingFace'], features: ['BERT Fine-Tuning', 'Real-Time Classification', 'Streamlit Dashboard', 'Sentiment Trends', 'Word Cloud Viz', 'REST API Ready'] }
 };
 
 function initProjectModal() {
@@ -225,13 +237,15 @@ function initContactForm() {
     const form = document.getElementById('contactForm');
     if (!form) return;
 
+    // Backend API URL — update port if you change it in .env
+    const API_URL = 'http://localhost:9000/api/contact';
+
     const fields = {
-        name: { el: document.getElementById('contactName'), error: document.getElementById('nameError'), validate: v => v.trim().length >= 2 ? '' : 'Name must be at least 2 characters.' },
-        email: { el: document.getElementById('contactEmail'), error: document.getElementById('emailError'), validate: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? '' : 'Please enter a valid email.' },
+        name:    { el: document.getElementById('contactName'),    error: document.getElementById('nameError'),    validate: v => v.trim().length >= 2  ? '' : 'Name must be at least 2 characters.' },
+        email:   { el: document.getElementById('contactEmail'),   error: document.getElementById('emailError'),   validate: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? '' : 'Please enter a valid email.' },
         message: { el: document.getElementById('contactMessage'), error: document.getElementById('messageError'), validate: v => v.trim().length >= 10 ? '' : 'Message must be at least 10 characters.' }
     };
 
-    // Live validation
     Object.values(fields).forEach(({ el, error, validate }) => {
         el.addEventListener('input', () => {
             const msg = validate(el.value);
@@ -243,7 +257,6 @@ function initContactForm() {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        // Validate all fields
         let hasError = false;
         Object.values(fields).forEach(({ el, error, validate }) => {
             const msg = validate(el.value);
@@ -253,27 +266,25 @@ function initContactForm() {
         });
         if (hasError) return;
 
-        const submitBtn = document.getElementById('submitBtn');
-        const btnText = document.getElementById('btnText');
+        const submitBtn  = document.getElementById('submitBtn');
+        const btnText    = document.getElementById('btnText');
         const btnLoading = document.getElementById('btnLoading');
         const formStatus = document.getElementById('formStatus');
 
-        // Show loading state
-        btnText.style.display = 'none';
+        btnText.style.display    = 'none';
         btnLoading.style.display = 'inline-flex';
-        submitBtn.disabled = true;
-        formStatus.className = 'form-status';
+        submitBtn.disabled       = true;
         formStatus.style.display = 'none';
 
         const payload = {
-            name: fields.name.el.value.trim(),
-            email: fields.email.el.value.trim(),
+            name:    fields.name.el.value.trim(),
+            email:   fields.email.el.value.trim(),
             subject: document.getElementById('contactSubject').value.trim() || 'Portfolio Contact',
             message: fields.message.el.value.trim()
         };
 
         try {
-            const response = await fetch('/api/contact', {
+            const response = await fetch(API_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -281,25 +292,26 @@ function initContactForm() {
             const result = await response.json();
 
             if (response.ok && result.success) {
-                formStatus.textContent = '✅ Message sent! I\'ll get back to you within 24 hours.';
-                formStatus.className = 'form-status success';
+                formStatus.textContent   = '✅ Message sent! I\'ll get back to you within 24 hours.';
+                formStatus.className     = 'form-status success';
+                formStatus.style.display = 'block';
                 form.reset();
                 showToast('Message sent successfully!', 'success');
             } else {
                 throw new Error(result.message || 'Something went wrong.');
             }
         } catch (err) {
-            formStatus.textContent = `❌ ${err.message}. Please try emailing me directly at ankitjhinkwan9@gmail.com`;
-            formStatus.className = 'form-status error-msg';
+            formStatus.textContent   = '❌ Couldn\'t send message. Email me directly at ankitjhinkwan9@gmail.com';
+            formStatus.className     = 'form-status error-msg';
+            formStatus.style.display = 'block';
             showToast('Failed to send message.', 'error');
         } finally {
-            btnText.style.display = 'inline-flex';
+            btnText.style.display    = 'inline-flex';
             btnLoading.style.display = 'none';
-            submitBtn.disabled = false;
+            submitBtn.disabled       = false;
         }
     });
 }
-
 // ===== TOAST =====
 function showToast(message, type = 'success') {
     const container = document.getElementById('toastContainer');
@@ -308,6 +320,130 @@ function showToast(message, type = 'success') {
     toast.textContent = message;
     container.appendChild(toast);
     setTimeout(() => toast.remove(), 3100);
+}
+
+// ===== MATRIX RAIN =====
+function initMatrixRain() {
+    const canvas = document.createElement('canvas');
+    canvas.id = 'matrixCanvas';
+    canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.045;';
+    document.body.prepend(canvas);
+    const ctx = canvas.getContext('2d');
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789∑∂∫≈≠∞μσλπβαθ∇⊕⊗'.split('');
+    const fontSize = 13;
+    let cols, drops;
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        cols = Math.floor(canvas.width / fontSize);
+        drops = Array(cols).fill(1);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+    function draw() {
+        ctx.fillStyle = 'rgba(13,17,23,0.07)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#13d0d0';
+        ctx.font = fontSize + 'px monospace';
+        drops.forEach((y, i) => {
+            const char = chars[Math.floor(Math.random() * chars.length)];
+            ctx.fillText(char, i * fontSize, y * fontSize);
+            if (y * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+            drops[i]++;
+        });
+    }
+    setInterval(draw, 55);
+}
+
+// ===== GLITCH EFFECT =====
+function initGlitchEffect() {
+    const h1 = document.querySelector('#hero h1');
+    if (!h1) return;
+    const style = document.createElement('style');
+    style.textContent = `
+        #hero h1 { position: relative; display: inline-block; }
+        #hero h1::before, #hero h1::after {
+            content: attr(data-text);
+            position: absolute; top: 0; left: 0; width: 100%; overflow: hidden;
+        }
+        #hero h1::before {
+            color: #ff00c8;
+            animation: glitch-top 3.5s infinite linear;
+            clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+        }
+        #hero h1::after {
+            color: #00fff9;
+            animation: glitch-bottom 3.5s infinite linear;
+            clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+        }
+        @keyframes glitch-top {
+            0%,90%,100% { transform:translate(0); opacity:0; }
+            91% { transform:translate(-3px,-1px); opacity:0.8; }
+            92% { transform:translate(3px,1px); opacity:0.8; }
+            93% { transform:translate(-3px,0); opacity:0.8; }
+            94% { transform:translate(0,-2px); opacity:0.8; }
+            95% { transform:translate(-3px,-1px); opacity:0; }
+        }
+        @keyframes glitch-bottom {
+            0%,90%,100% { transform:translate(0); opacity:0; }
+            91% { transform:translate(3px,1px); opacity:0.8; }
+            92% { transform:translate(-3px,-1px); opacity:0.8; }
+            93% { transform:translate(2px,2px); opacity:0.8; }
+            94% { transform:translate(0,2px); opacity:0.8; }
+            95% { transform:translate(3px,1px); opacity:0; }
+        }
+        #hero h1:hover { animation: glitch-shake 0.3s cubic-bezier(.36,.07,.19,.97) both; }
+        @keyframes glitch-shake {
+            10%,90% { transform:translate3d(-1px,0,0); }
+            20%,80% { transform:translate3d(2px,0,0); }
+            30%,50%,70% { transform:translate3d(-3px,0,0); }
+            40%,60% { transform:translate3d(3px,0,0); }
+        }
+    `;
+    document.head.appendChild(style);
+    h1.setAttribute('data-text', h1.textContent);
+}
+
+// ===== ANIMATED GRADIENT TEXT =====
+function initGradientText() {
+    const style = document.createElement('style');
+    style.textContent = `
+        .text-gradient {
+            background: linear-gradient(90deg, #13d0d0, #ff00c8, #ffe600, #13d0d0);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 4s ease infinite;
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .hero-desc {
+            background: linear-gradient(90deg, #94a3b8, #13d0d0, #ff00c8, #94a3b8);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 6s ease infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: 0% center; }
+            50% { background-position: 100% center; }
+            100% { background-position: 0% center; }
+        }
+        .section-title {
+            background: linear-gradient(135deg, #ffffff 30%, #13d0d0 70%, #ff00c8 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 6s ease infinite;
+        }
+    `;
+    document.head.appendChild(style);
 }
 
 // ===== SCROLL ANIMATIONS =====
