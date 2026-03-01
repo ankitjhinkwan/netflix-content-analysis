@@ -1,402 +1,342 @@
-// ===================================================
-//  ANKIT JINKWAN PORTFOLIO — main.js
-// ===================================================
+// ===== ANKIT JINKWAN PORTFOLIO - MAIN JS =====
 
-// ── EmailJS Setup ─────────────────────────────────
-// STEPS TO ACTIVATE FREE EMAIL:
-// 1. Go to https://emailjs.com → Sign up (free — 200 emails/month)
-// 2. Add Email Service → Gmail → connect your Gmail → copy Service ID
-// 3. Create Email Template → use these variables in the body:
-//      From: {{from_name}} ({{from_email}})
-//      Subject: {{subject}}
-//      {{message}}
-//    Copy the Template ID
-// 4. Account tab → General → copy your Public Key
-// 5. Paste the three values below and you're done!
-const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';    // e.g. 'service_abc123'
-const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';   // e.g. 'template_xyz456'
-const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';     // e.g. 'aBcDeFgHiJkLmNoP'
-
-// ── Project Data ──────────────────────────────────
-const PROJECTS = {
-    1: {
-        cat: 'ML Model',
-        title: 'Customer Churn Prediction',
-        desc: 'A binary classification model predicting telecom customer churn with 92% accuracy. Uses Random Forest with SHAP values to explain which features drive churn — enabling targeted retention strategies that save businesses money.',
-        tags: ['Python', 'Random Forest', 'SHAP', 'Scikit-learn', 'Seaborn', 'Pandas'],
-        features: ['92% Classification Accuracy', 'SHAP Explainability', 'Feature Importance Analysis', 'Confusion Matrix & ROC-AUC', 'Business Insight Reports', 'End-to-End ML Pipeline'],
-        img: 'https://placehold.co/800x450/091525/13d0d0?text=Customer+Churn+Prediction',
-        live: '#', github: 'https://github.com/ankitjhinkwan'
-    },
-    2: {
-        cat: 'Visualisation',
-        title: 'Sales Analytics Dashboard',
-        desc: 'An interactive Power BI dashboard visualising 3 years of retail sales data. Includes KPI scorecards, revenue trends, regional breakdowns and product performance metrics — used directly for business decision-making.',
-        tags: ['Power BI', 'DAX', 'SQL', 'Excel', 'Data Modelling'],
-        features: ['KPI Scorecards', 'Regional Breakdown', 'Year-over-Year Trends', 'Product Performance', 'DAX Measures', 'Drill-Through Pages'],
-        img: 'https://placehold.co/800x450/091525/13d0d0?text=Sales+Analytics+Dashboard',
-        live: '#', github: 'https://github.com/ankitjhinkwan'
-    },
-    3: {
-        cat: 'ML Model',
-        title: 'House Price Prediction',
-        desc: 'Regression model predicting house prices using advanced feature engineering and XGBoost on the Ames Housing dataset. Achieved RMSE in the Kaggle top 10% — with SHAP values for full model explainability.',
-        tags: ['Python', 'XGBoost', 'Scikit-learn', 'Pandas', 'Matplotlib', 'SHAP'],
-        features: ['Top 10% Kaggle RMSE', 'Advanced Feature Engineering', 'Hyperparameter Tuning', 'Cross-Validation', 'SHAP Explainability', 'Full EDA Pipeline'],
-        img: 'https://placehold.co/800x450/091525/13d0d0?text=House+Price+Prediction',
-        live: '#', github: 'https://github.com/ankitjhinkwan'
-    },
-    4: {
-        cat: 'EDA',
-        title: 'Netflix Content Analysis',
-        desc: 'Deep-dive exploratory data analysis of Netflix\'s entire catalogue — uncovering genre trends, release patterns, content ratings and regional distribution. Reveals how Netflix evolved its content strategy over the years.',
-        tags: ['Pandas', 'Plotly', 'Matplotlib', 'Python', 'Seaborn'],
-        features: ['Genre Trend Analysis', 'Release Pattern Study', 'Content Rating Breakdown', 'Regional Distribution', 'Interactive Plotly Charts', 'Time-Series Analysis'],
-        img: 'https://placehold.co/800x450/091525/ff4060?text=Netflix+Content+Analysis',
-        live: '#', github: 'https://github.com/ankitjhinkwan'
-    },
-    5: {
-        cat: 'NLP',
-        title: 'Twitter Sentiment Analysis',
-        desc: 'End-to-end NLP pipeline classifying tweet sentiments in real-time using a fine-tuned BERT model. Deployed as an interactive Streamlit dashboard for live sentiment monitoring, word clouds and trend tracking.',
-        tags: ['BERT', 'HuggingFace', 'Streamlit', 'Python', 'NLP', 'PyTorch'],
-        features: ['BERT Fine-Tuning', 'Real-Time Classification', 'Streamlit Dashboard', 'Sentiment Trend Charts', 'Word Cloud Visualisation', 'REST API Ready'],
-        img: 'https://placehold.co/800x450/091525/c8dae8?text=Twitter+Sentiment+Analysis',
-        live: '#', github: 'https://github.com/ankitjhinkwan'
-    },
-    6: {
-        cat: 'EDA',
-        title: 'COVID-19 Data Analysis',
-        desc: 'Comprehensive exploratory data analysis of global COVID-19 trends — vaccination rates, mortality patterns, spread timelines and country-level responses. Includes an automated data cleaning pipeline for daily-updating datasets.',
-        tags: ['Pandas', 'Seaborn', 'NumPy', 'Matplotlib', 'Jupyter', 'Python'],
-        features: ['Global Trend Analysis', 'Vaccination Rate Tracking', 'Mortality Pattern Study', 'Country Comparisons', 'Automated Data Pipeline', 'Time-Series Visualisations'],
-        img: 'https://placehold.co/800x450/091525/ff4060?text=COVID-19+Data+Analysis',
-        live: '#', github: 'https://github.com/ankitjhinkwan'
-    }
-};
-
-// ══════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
-    initCursor();
     initParticles();
-    initTyped();
+    initTypedEffect();
     initHeader();
     initMobileMenu();
     initBackToTop();
-    initReveal();
-    initSkillBars();
-    initFilter();
-    initModal();
+    initSkillAnimations();
+    initProjectFilter();
+    initProjectModal();
     initContactForm();
+    initScrollAnimations();
 });
 
-// ── CURSOR ────────────────────────────────────────
-function initCursor() {
-    const dot  = document.getElementById('cDot');
-    const ring = document.getElementById('cRing');
-    if (!dot || !ring) return;
-
-    let mx = 0, my = 0, rx = 0, ry = 0;
-
-    document.addEventListener('mousemove', e => {
-        mx = e.clientX; my = e.clientY;
-        dot.style.left = mx + 'px';
-        dot.style.top  = my + 'px';
-    });
-
-    function animRing() {
-        rx += (mx - rx) * 0.14;
-        ry += (my - ry) * 0.14;
-        ring.style.left = rx + 'px';
-        ring.style.top  = ry + 'px';
-        requestAnimationFrame(animRing);
-    }
-    animRing();
-
-    document.querySelectorAll('a, button, .proj-card, .chip, .f-btn').forEach(el => {
-        el.addEventListener('mouseenter', () => ring.classList.add('hov'));
-        el.addEventListener('mouseleave', () => ring.classList.remove('hov'));
-    });
-}
-
-// ── PARTICLES ─────────────────────────────────────
+// ===== PARTICLES =====
 function initParticles() {
-    const wrap = document.getElementById('pWrap');
-    if (!wrap) return;
-    for (let i = 0; i < 28; i++) {
-        const p = document.createElement('div');
-        p.classList.add('p-dot');
-        p.style.cssText = `
-            left:${Math.random()*100}%;
-            width:${Math.random()*3+1.5}px;
-            height:${Math.random()*3+1.5}px;
-            animation-duration:${Math.random()*16+12}s;
-            animation-delay:${Math.random()*12}s;
-            opacity:${Math.random()*.4+.08};
+    const container = document.getElementById('particles');
+    if (!container) return;
+    for (let i = 0; i < 30; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        particle.style.cssText = `
+            left: ${Math.random() * 100}%;
+            width: ${Math.random() * 4 + 2}px;
+            height: ${Math.random() * 4 + 2}px;
+            animation-duration: ${Math.random() * 15 + 10}s;
+            animation-delay: ${Math.random() * 10}s;
+            opacity: ${Math.random() * 0.5 + 0.1};
         `;
-        wrap.appendChild(p);
+        container.appendChild(particle);
     }
 }
 
-// ── TYPED EFFECT ──────────────────────────────────
-function initTyped() {
-    const el = document.getElementById('typedEl');
+// ===== TYPED EFFECT =====
+function initTypedEffect() {
+    const el = document.getElementById('typedText');
     if (!el) return;
-    const phrases = ['Data Scientist', 'ML Engineer', 'Data Analyst', 'Insight Explorer', 'Problem Solver'];
-    let pi = 0, ci = 0, del = false;
+    const phrases = ['Full Stack Developer', 'React Developer', 'Node.js Engineer', 'UI/UX Enthusiast', 'Problem Solver'];
+    let phraseIndex = 0, charIndex = 0, isDeleting = false;
 
     function type() {
-        const cur = phrases[pi];
-        el.textContent = del ? cur.slice(0, ci--) : cur.slice(0, ci++);
-        let delay = del ? 55 : 105;
-        if (!del && ci === cur.length + 1) { delay = 2000; del = true; }
-        else if (del && ci < 0) { del = false; ci = 0; pi = (pi + 1) % phrases.length; delay = 350; }
+        const current = phrases[phraseIndex];
+        el.textContent = isDeleting
+            ? current.substring(0, charIndex--)
+            : current.substring(0, charIndex++);
+
+        let delay = isDeleting ? 60 : 110;
+
+        if (!isDeleting && charIndex === current.length + 1) {
+            delay = 2000;
+            isDeleting = true;
+        } else if (isDeleting && charIndex === 0) {
+            isDeleting = false;
+            phraseIndex = (phraseIndex + 1) % phrases.length;
+            delay = 400;
+        }
         setTimeout(type, delay);
     }
     setTimeout(type, 800);
 }
 
-// ── HEADER ────────────────────────────────────────
+// ===== HEADER =====
 function initHeader() {
-    const hdr = document.getElementById('header');
-    const links = document.querySelectorAll('.nav-link');
-    const sections = document.querySelectorAll('section[id]');
-
+    const header = document.getElementById('header');
     window.addEventListener('scroll', () => {
-        hdr.classList.toggle('scrolled', window.scrollY > 50);
+        header.classList.toggle('scrolled', window.scrollY > 50);
+    }, { passive: true });
 
-        const pos = window.scrollY + 140;
-        sections.forEach(sec => {
-            if (pos >= sec.offsetTop && pos < sec.offsetTop + sec.offsetHeight) {
-                links.forEach(l => {
-                    l.classList.remove('active');
-                    if (l.getAttribute('href') === '#' + sec.id) l.classList.add('active');
+    // Active nav link on scroll
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    window.addEventListener('scroll', () => {
+        const scrollPos = window.scrollY + 120;
+        sections.forEach(section => {
+            if (scrollPos >= section.offsetTop && scrollPos < section.offsetTop + section.offsetHeight) {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${section.id}`) link.classList.add('active');
                 });
             }
         });
     }, { passive: true });
 }
 
-// ── MOBILE MENU ───────────────────────────────────
+// ===== MOBILE MENU =====
 function initMobileMenu() {
-    const btn     = document.getElementById('menuBtn');
-    const nav     = document.getElementById('navList');
-    const overlay = document.getElementById('navOverlay');
+    const menuBtn = document.getElementById('menuBtn');
+    const navLinks = document.getElementById('navLinks');
 
-    function close() {
-        nav.classList.remove('open');
-        overlay.classList.remove('on');
-        btn.innerHTML = '<i class="fas fa-bars"></i>';
+    // Create overlay
+    const overlay = document.createElement('div');
+    overlay.classList.add('nav-overlay');
+    document.body.appendChild(overlay);
+
+    function closeMenu() {
+        navLinks.classList.remove('active');
+        overlay.classList.remove('active');
+        menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
         document.body.style.overflow = '';
     }
 
-    btn.addEventListener('click', () => {
-        const open = nav.classList.contains('open');
-        open ? close() : (
-            nav.classList.add('open'),
-            overlay.classList.add('on'),
-            (btn.innerHTML = '<i class="fas fa-times"></i>'),
-            (document.body.style.overflow = 'hidden')
-        );
+    menuBtn.addEventListener('click', () => {
+        const isOpen = navLinks.classList.contains('active');
+        if (isOpen) {
+            closeMenu();
+        } else {
+            navLinks.classList.add('active');
+            overlay.classList.add('active');
+            menuBtn.innerHTML = '<i class="fas fa-times"></i>';
+            document.body.style.overflow = 'hidden';
+        }
     });
 
-    overlay.addEventListener('click', close);
-    document.querySelectorAll('.nav-link').forEach(l => l.addEventListener('click', close));
+    overlay.addEventListener('click', closeMenu);
+    document.querySelectorAll('.nav-link').forEach(link => link.addEventListener('click', closeMenu));
 }
 
-// ── BACK TO TOP ───────────────────────────────────
+// ===== BACK TO TOP =====
 function initBackToTop() {
-    const btn = document.getElementById('btt');
+    const btn = document.getElementById('backToTop');
     window.addEventListener('scroll', () => {
-        btn.classList.toggle('on', window.scrollY > 420);
+        btn.classList.toggle('active', window.scrollY > 400);
     }, { passive: true });
 }
 
-// ── SCROLL REVEAL ─────────────────────────────────
-function initReveal() {
-    const obs = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-            if (e.isIntersecting) {
-                e.target.classList.add('vis');
-                obs.unobserve(e.target);
-            }
-        });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-    document.querySelectorAll('.reveal').forEach((el, i) => {
-        el.style.transitionDelay = `${(i % 4) * 0.08}s`;
-        obs.observe(el);
-    });
-}
-
-// ── SKILL BARS ────────────────────────────────────
-function initSkillBars() {
-    const obs = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-            if (e.isIntersecting) {
-                const fill = e.target.querySelector('.s-fill');
-                const pct  = e.target.dataset.s;
-                if (fill && pct) {
-                    setTimeout(() => { fill.style.width = pct + '%'; }, 120);
+// ===== SKILL BAR ANIMATIONS =====
+function initSkillAnimations() {
+    const skillItems = document.querySelectorAll('.skill-item');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const progress = entry.target.querySelector('.skill-progress');
+                const target = entry.target.dataset.skill;
+                if (progress && target) {
+                    setTimeout(() => {
+                        progress.style.width = target + '%';
+                    }, 100);
+                    observer.unobserve(entry.target);
                 }
-                obs.unobserve(e.target);
             }
         });
     }, { threshold: 0.5 });
 
-    document.querySelectorAll('.s-item').forEach(item => obs.observe(item));
+    skillItems.forEach(item => observer.observe(item));
 }
 
-// ── PROJECT FILTER ────────────────────────────────
-function initFilter() {
-    const btns  = document.querySelectorAll('.f-btn');
-    const cards = document.querySelectorAll('.proj-card');
+// ===== PROJECT FILTER =====
+function initProjectFilter() {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.project-card');
 
-    btns.forEach(btn => {
+    filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            btns.forEach(b => b.classList.remove('active'));
+            filterBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            const f = btn.dataset.f;
+            const filter = btn.dataset.filter;
 
             cards.forEach(card => {
-                const show = f === 'all' || card.dataset.cat === f;
+                const show = filter === 'all' || card.dataset.category === filter;
+                card.style.transition = 'all 0.4s ease';
                 if (show) {
-                    card.style.display = 'flex';
-                    setTimeout(() => {
-                        card.style.opacity  = '1';
-                        card.style.transform = 'translateY(0)';
-                    }, 10);
+                    card.style.display = 'block';
+                    setTimeout(() => { card.style.opacity = '1'; card.style.transform = 'translateY(0)'; }, 10);
                 } else {
-                    card.style.opacity  = '0';
+                    card.style.opacity = '0';
                     card.style.transform = 'translateY(20px)';
-                    setTimeout(() => { card.style.display = 'none'; }, 320);
+                    setTimeout(() => { card.style.display = 'none'; }, 400);
                 }
             });
         });
     });
 }
 
-// ── PROJECT MODAL ─────────────────────────────────
-function initModal() {
-    const modal = document.getElementById('modal');
-    const close = document.getElementById('mClose');
+// ===== PROJECT MODAL =====
+const projectData = {
+    1: { category: 'Web App', title: 'E-Commerce Dashboard', desc: 'A comprehensive dashboard for online retailers featuring real-time analytics, inventory management, order tracking, and customer insights built with React and Node.js.', tags: ['React', 'Node.js', 'MongoDB', 'Express', 'Chart.js'], features: ['Real-time Analytics', 'Inventory Management', 'Order Tracking', 'User Authentication', 'Responsive Design', 'REST API'] },
+    2: { category: 'Mobile App', title: 'Health Tracker App', desc: 'A mobile application for tracking daily fitness activities, water intake, calorie counting and health metrics. Features interactive charts and personalized goal setting.', tags: ['React Native', 'Firebase', 'Redux', 'Chart.js'], features: ['Daily Step Counter', 'Water Intake Log', 'Calorie Tracker', 'Progress Charts', 'Push Notifications', 'Offline Support'] },
+    3: { category: 'UI/UX', title: 'UI Design System', desc: 'A complete, scalable design system with reusable components, design tokens, and comprehensive documentation to ensure consistent UI development across projects.', tags: ['Figma', 'Storybook', 'CSS3', 'Design Tokens'], features: ['50+ Components', 'Dark/Light Mode', 'Accessibility Ready', 'Storybook Docs', 'Design Tokens', 'Figma Library'] },
+    4: { category: 'Web App', title: 'Task Management', desc: 'A collaborative project management tool with Kanban boards, drag-and-drop tasks, team assignments, time tracking and deadline management.', tags: ['Vue.js', 'Express', 'PostgreSQL', 'Socket.io'], features: ['Kanban Boards', 'Drag & Drop', 'Team Collaboration', 'Time Tracking', 'Real-time Updates', 'Email Notifications'] },
+    5: { category: 'Mobile App', title: 'Social Media App', desc: 'A social networking platform designed for professionals in creative industries. Features real-time messaging, portfolio sharing and networking tools.', tags: ['Flutter', 'Firebase', 'Dart', 'Cloud Firestore'], features: ['Real-time Chat', 'Portfolio Showcase', 'Follow System', 'Stories Feature', 'Push Notifications', 'Media Upload'] },
+    6: { category: 'UI/UX', title: 'Portfolio Redesign', desc: 'A complete visual redesign of a professional photographer portfolio website featuring interactive galleries, smooth GSAP animations and a modern minimalist aesthetic.', tags: ['UI/UX', 'GSAP', 'CSS3', 'JavaScript'], features: ['Smooth Animations', 'Interactive Gallery', 'Lightbox Effect', 'Contact Form', 'SEO Optimized', 'Performance Tuned'] }
+};
+
+function initProjectModal() {
+    const modal = document.getElementById('projectModal');
+    const modalClose = document.getElementById('modalClose');
+
+    document.querySelectorAll('.view-project').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const id = btn.dataset.id;
+            const data = projectData[id];
+            if (!data) return;
+
+            document.getElementById('modalCategory').textContent = data.category;
+            document.getElementById('modalTitle').textContent = data.title;
+            document.getElementById('modalDesc').textContent = data.desc;
+            document.getElementById('modalImg').src = btn.closest('.project-card').querySelector('img').src;
+            document.getElementById('modalImg').alt = data.title;
+
+            const tagsEl = document.getElementById('modalTags');
+            tagsEl.innerHTML = data.tags.map(t => `<span class="project-tag">${t}</span>`).join('');
+
+            const featuresEl = document.getElementById('modalFeatures');
+            featuresEl.innerHTML = `<h4>Key Features</h4><ul>${data.features.map(f => `<li>${f}</li>`).join('')}</ul>`;
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    });
 
     function closeModal() {
         modal.classList.remove('active');
         document.body.style.overflow = '';
     }
 
-    close.addEventListener('click', closeModal);
-    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+    modalClose.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
 }
 
-function openModal(id) {
-    const d = PROJECTS[id];
-    if (!d) return;
-
-    document.getElementById('mCat').textContent   = d.cat;
-    document.getElementById('mTitle').textContent  = d.title;
-    document.getElementById('mDesc').textContent   = d.desc;
-    document.getElementById('mImg').src            = d.img;
-    document.getElementById('mImg').alt            = d.title;
-    document.getElementById('mLive').href          = d.live;
-    document.getElementById('mGit').href           = d.github;
-
-    document.getElementById('mTags').innerHTML =
-        d.tags.map(t => `<span class="tag">${t}</span>`).join('');
-
-    document.getElementById('mFeats').innerHTML = `
-        <h4>Key Features</h4>
-        <ul>${d.features.map(f => `<li>${f}</li>`).join('')}</ul>
-    `;
-
-    document.getElementById('modal').classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
-
-// ── CONTACT FORM (EmailJS) ────────────────────────
+// ===== CONTACT FORM =====
 function initContactForm() {
-    const form   = document.getElementById('contactForm');
+    const form = document.getElementById('contactForm');
     if (!form) return;
 
     const fields = {
-        name:    { el: document.getElementById('cName'),    err: document.getElementById('nameErr'),  v: s => s.trim().length >= 2 ? '' : 'Name must be at least 2 characters.' },
-        email:   { el: document.getElementById('cEmail'),   err: document.getElementById('emailErr'), v: s => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s) ? '' : 'Please enter a valid email address.' },
-        message: { el: document.getElementById('cMsg'),     err: document.getElementById('msgErr'),   v: s => s.trim().length >= 10 ? '' : 'Message must be at least 10 characters.' }
+        name: { el: document.getElementById('contactName'), error: document.getElementById('nameError'), validate: v => v.trim().length >= 2 ? '' : 'Name must be at least 2 characters.' },
+        email: { el: document.getElementById('contactEmail'), error: document.getElementById('emailError'), validate: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? '' : 'Please enter a valid email.' },
+        message: { el: document.getElementById('contactMessage'), error: document.getElementById('messageError'), validate: v => v.trim().length >= 10 ? '' : 'Message must be at least 10 characters.' }
     };
 
     // Live validation
-    Object.values(fields).forEach(({ el, err, v }) => {
+    Object.values(fields).forEach(({ el, error, validate }) => {
         el.addEventListener('input', () => {
-            const msg = v(el.value);
-            err.textContent = msg;
-            el.classList.toggle('err', !!msg);
+            const msg = validate(el.value);
+            error.textContent = msg;
+            el.classList.toggle('error', !!msg);
         });
     });
 
-    form.addEventListener('submit', async e => {
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        let hasErr = false;
-        Object.values(fields).forEach(({ el, err, v }) => {
-            const msg = v(el.value);
-            err.textContent = msg;
-            el.classList.toggle('err', !!msg);
-            if (msg) hasErr = true;
+        // Validate all fields
+        let hasError = false;
+        Object.values(fields).forEach(({ el, error, validate }) => {
+            const msg = validate(el.value);
+            error.textContent = msg;
+            el.classList.toggle('error', !!msg);
+            if (msg) hasError = true;
         });
-        if (hasErr) return;
+        if (hasError) return;
 
-        const btn     = document.getElementById('submitBtn');
-        const txtEl   = document.getElementById('btnTxt');
-        const loadEl  = document.getElementById('btnLoad');
-        const status  = document.getElementById('fStatus');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const btnLoading = document.getElementById('btnLoading');
+        const formStatus = document.getElementById('formStatus');
 
-        txtEl.style.display  = 'none';
-        loadEl.style.display = 'inline-flex';
-        btn.disabled         = true;
-        status.className     = 'f-status';
+        // Show loading state
+        btnText.style.display = 'none';
+        btnLoading.style.display = 'inline-flex';
+        submitBtn.disabled = true;
+        formStatus.className = 'form-status';
+        formStatus.style.display = 'none';
 
-        const params = {
-            from_name:  fields.name.el.value.trim(),
-            from_email: fields.email.el.value.trim(),
-            subject:    document.getElementById('cSubject').value.trim() || 'Portfolio Contact',
-            message:    fields.message.el.value.trim()
+        const payload = {
+            name: fields.name.el.value.trim(),
+            email: fields.email.el.value.trim(),
+            subject: document.getElementById('contactSubject').value.trim() || 'Portfolio Contact',
+            message: fields.message.el.value.trim()
         };
 
         try {
-            // Check if EmailJS is configured
-            if (EMAILJS_SERVICE_ID === 'YOUR_SERVICE_ID') {
-                throw new Error('EmailJS not configured yet — see comment at top of main.js');
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                formStatus.textContent = '✅ Message sent! I\'ll get back to you within 24 hours.';
+                formStatus.className = 'form-status success';
+                form.reset();
+                showToast('Message sent successfully!', 'success');
+            } else {
+                throw new Error(result.message || 'Something went wrong.');
             }
-
-            await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params, EMAILJS_PUBLIC_KEY);
-
-            status.textContent = '✅ Message sent! I\'ll get back to you within 24 hours.';
-            status.className   = 'f-status ok';
-            form.reset();
-            showToast('Message sent! 🎉', 'ok');
         } catch (err) {
-            const msg = err.message.includes('not configured')
-                ? '⚠️ Email not yet configured — reach me directly at ankitjhinkwan9@gmail.com'
-                : '❌ Couldn\'t send message. Please email ankitjhinkwan9@gmail.com directly.';
-            status.textContent = msg;
-            status.className   = 'f-status fail';
-            showToast('Failed to send :(', 'fail');
+            formStatus.textContent = `❌ ${err.message}. Please try emailing me directly at ankitjhinkwan9@gmail.com`;
+            formStatus.className = 'form-status error-msg';
+            showToast('Failed to send message.', 'error');
         } finally {
-            txtEl.style.display  = 'inline-flex';
-            loadEl.style.display = 'none';
-            btn.disabled         = false;
+            btnText.style.display = 'inline-flex';
+            btnLoading.style.display = 'none';
+            submitBtn.disabled = false;
         }
     });
 }
 
-// ── TOAST ─────────────────────────────────────────
-function showToast(msg, type = 'ok') {
-    const wrap = document.getElementById('toasts');
-    const t    = document.createElement('div');
-    t.className = `toast ${type}`;
-    t.textContent = msg;
-    wrap.appendChild(t);
-    setTimeout(() => t.remove(), 3200);
+// ===== TOAST =====
+function showToast(message, type = 'success') {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+    container.appendChild(toast);
+    setTimeout(() => toast.remove(), 3100);
+}
+
+// ===== SCROLL ANIMATIONS =====
+function initScrollAnimations() {
+    const animateEls = document.querySelectorAll('.project-card, .tech-icon, .info-item, .about-content, .contact-form');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.animation = 'fadeInUp 0.6s ease forwards';
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    // Add initial state
+    const style = document.createElement('style');
+    style.textContent = `
+        .project-card, .tech-icon, .info-item, .about-content, .contact-form {
+            opacity: 0;
+            transform: translateY(25px);
+        }
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+    `;
+    document.head.appendChild(style);
+
+    animateEls.forEach((el, i) => {
+        el.style.animationDelay = `${(i % 3) * 0.1}s`;
+        observer.observe(el);
+    });
 }
