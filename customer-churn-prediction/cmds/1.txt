@@ -1,0 +1,2 @@
+jupyter notebook
+streamlit run app/app.py
